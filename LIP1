@@ -1,0 +1,39 @@
+# LBTC Improvement Proposal : 1
+  Title: Wallet Standard
+  Author:  Wuding 
+  Type: standard   
+  Created:  2021-2-7
+
+
+Abstract
+This describes a wallet standard that allows the wallet files to be shared between the various implementations of LBTC.
+
+
+Motivation
+Currently, different client programs generate different wallet files. They have different file formats, different ways of storing, and different ways of encrypting. It is difficult for users to migrate between different client programs because the wallet files are not in the same format. Although migration can be achieved by exporting the private key, it is cumbersome for wallets with multiple private keys. We need an universal wallet format that allows users to migrate across all platforms safely and easily without having to change the wallet file or export the private keys.
+
+Rationale
+The wallet standard should consider both security and cross-platform compatibility. For security, we require the implementations to use the LBTC-1 mechanism to encrypt or decrypt the private keys. For cross-platform, we use the JSON format to describe the wallet files, so that the contents of the wallet files can be easily recognized on each platform.
+
+
+Specification
+
+Wallet
+A wallet file in JSON format has the following basic structure:
+{
+  "name": "MyWallet",
+  "version": "1.0",
+  "scrypt": {},
+  "accounts": [],
+  "extra": null
+}
+
+name is a label that the user has given to the wallet.
+
+version is currently fixed at 1.0 and will be used for functional upgrades in the future.
+
+scrypt is a ScryptParameters object which describes the parameters of the Scrypt algorithm used for encrypting and decrypting the private keys in the wallet.
+
+accounts is an array of Account objects which describe the details of each account in the wallet.
+
+extra is an object that is defined by the implementor of the client for storing extra data. This field can be null.
